@@ -10,35 +10,47 @@ export default function App() {
   );
 }
 function TipCalculator() {
+  const [bill, setbill] = useState("");
+  const [percentage1, setpercentage1] = useState(0);
+  const [percentage2, setpercentage2] = useState(0);
+  const tip = bill * ((percentage1 + percentage2) / 2 / 100);
   return (
     <div>
-      <BillInput />
-      <SelectPercentage>How much do you like the Service?</SelectPercentage>
-      <SelectPercentage>
+      <BillInput bill={bill} onSetBill={setbill} />
+      <SelectPercentage percentage={percentage1} onselect={setpercentage1}>
+        How much do you like the Service?
+      </SelectPercentage>
+      <SelectPercentage percentage={percentage2} onselect={setpercentage2}>
         {" "}
         How did your friend like the service{" "}
       </SelectPercentage>
-      <Output />
+      <Output bill={bill} tip={tip} />
       <Reset />
     </div>
   );
 }
-function BillInput() {
-  const [amount, setamount] = useState("80");
-
+function BillInput({ bill, onSetBill }) {
   return (
     <div>
       <label>
-        How much was the bill ?<input type="text" value={amount} />
+        How much was the bill ?
+        <input
+          type="text"
+          value={bill}
+          onChange={(e) => onSetBill(Number(e.target.value))}
+        />
       </label>
     </div>
   );
 }
-function SelectPercentage({ children }) {
+function SelectPercentage({ onselect, percentage, children }) {
   return (
     <div>
-      <labrl>{children}</labrl>
-      <select>
+      <label>{children}</label>
+      <select
+        value={percentage}
+        onChange={(e) => onselect(Number(e.target.value))}
+      >
         <option value="5">It was okay(5%)</option>
         <option value="10">It was good(10%)</option>
         <option value="20">Absolutly Amazing(20%)</option>
@@ -47,11 +59,11 @@ function SelectPercentage({ children }) {
     </div>
   );
 }
-function Output() {
+function Output({ bill, tip }) {
   return (
     <div>
       <p>
-        You pay {} {}
+        You pay ${tip + bill} [${bill} + ${tip}tip]
       </p>
     </div>
   );
