@@ -9,6 +9,7 @@ export default function App() {
     </div>
   );
 }
+// this component holds all other components
 function TipCalculator() {
   const [bill, setbill] = useState("");
   const [percentage1, setpercentage1] = useState(0);
